@@ -9,6 +9,7 @@ import communication.Communication;
 import domen.AbstractObject;
 import domen.Bransa;
 import domen.Kompanija;
+import domen.Praksa;
 import domen.Student;
 import domen.Zaposleni;
 import exception.*;
@@ -219,6 +220,32 @@ public class Controler {
             return (AbstractObject) ser.getPodaci();
         }
         throw new AzuriranjeKompanijeException(ser.getException().getMessage());
+    }
+
+    public void unesiNovuPraksu(Praksa praksa) throws IOException, ClassNotFoundException, Exception {
+        System.out.println("Saljemo zahtjev za cuvanje prakse..");
+        clr = new ClientRequest(Operations.SACUVAJ_PRAKSU, praksa);
+        
+        Communication.getInstance().sendRequest(clr);
+        ser = Communication.getInstance().recieveResponse();
+        if(ser.getUspesnost() != Operations.USPESNO) {
+           throw ser.getException(); 
+        }
+        System.out.println("Unos uspjesan!");
+    }
+
+    public List<AbstractObject> ucitajSvePrakse() throws IOException, ClassNotFoundException, Exception {
+        System.out.println("Saljemo zahtjev za ucitavanje liste praksi...");
+        clr = new ClientRequest(Operations.UCITAJ_SVE_PRAKSE, null);
+        Communication.getInstance().sendRequest(clr);
+        
+        System.out.println("Primamo odgovor od servera");
+        ser = Communication.getInstance().recieveResponse();
+        
+        if(ser.getUspesnost() == Operations.USPESNO) {
+            return (List<AbstractObject>)ser.getPodaci();
+        }
+        throw new Exception(ser.getException().getMessage());
     }
 }
 
