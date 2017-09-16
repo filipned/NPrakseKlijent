@@ -47,6 +47,8 @@ public class MainForm extends javax.swing.JFrame {
     private List<AbstractObject> studenti;
     private List<AbstractObject> kompanije;    
     private List<AbstractObject> prakse;
+    private Student globalStudent;
+    private Kompanija globalKompanija;
     /**
      * Creates new form MainFrom
      * @param zaposleni
@@ -56,12 +58,13 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm(Zaposleni zaposleni) throws HeadlessException {
         this();
         this.zaposleni = zaposleni;
+        
     }
 
     public MainForm() {
         initComponents();
         praksa = new Praksa();
-        
+        this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         srediStudentTabelu();
         srediKompanijaTabelu();
         srediPraksaTabelu();
@@ -116,6 +119,7 @@ public class MainForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTablePrakse = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -294,6 +298,13 @@ public class MainForm extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTablePrakse);
 
+        jButton3.setText("Prikazi podatke za praksu");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         jMenuBar1.setMinimumSize(new java.awt.Dimension(1, 1));
         jMenuBar1.setName(""); // NOI18N
 
@@ -313,7 +324,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenu2.setText("Kompanije");
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Dodaj kompaniju");
+        jMenuItem2.setText(" Unesi novu kompaniju");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -366,49 +377,55 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(jButtonUkloniStudentaIzPrakse)
                             .addComponent(jButtonUkloniKompanijuIzPrakse)))
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelStudentZaPraksu)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jTextFieldKriterijumPraksa)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(78, 78, 78))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabelKompanijaZaPraksu))
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldDatumPocetka, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jTextFieldDatumZavrsetka, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane4)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jComboBoxBranse, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jSpinnerOcena))
-                                .addGap(76, 76, 76)
-                                .addComponent(jButtonUnosPrakse))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelStudentZaPraksu)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jTextFieldKriterijumPraksa)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1)
+                                        .addGap(78, 78, 78))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabelKompanijaZaPraksu))
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jTextFieldDatumPocetka, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jTextFieldDatumZavrsetka, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jScrollPane4)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel13)
+                                            .addComponent(jComboBoxBranse, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jSpinnerOcena))
+                                        .addGap(76, 76, 76)
+                                        .addComponent(jButtonUnosPrakse))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane3))
+                                .addContainerGap())))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -462,13 +479,15 @@ public class MainForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxBranse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSpinnerOcena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonUnosPrakse)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonIzmijeniStudenta)
-                        .addComponent(jButtonObrisiStudenta)
-                        .addComponent(jButtonDodajStudentaUPraksu)
-                        .addComponent(jLabel11)))
-                .addGap(36, 36, 36)
+                            .addComponent(jButtonUnosPrakse))
+                        .addGap(36, 36, 36))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonIzmijeniStudenta)
+                            .addComponent(jButtonObrisiStudenta)
+                            .addComponent(jButtonDodajStudentaUPraksu)
+                            .addComponent(jLabel11))
+                        .addGap(18, 18, 18)))
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -481,10 +500,12 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonDodajKompanijuUPraksu)
-                    .addComponent(jButtonImijeniKompaniju)
-                    .addComponent(jButtonObrisiKompaniju))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonDodajKompanijuUPraksu)
+                        .addComponent(jButtonImijeniKompaniju)
+                        .addComponent(jButtonObrisiKompaniju)))
                 .addContainerGap())
         );
 
@@ -518,6 +539,9 @@ public class MainForm extends javax.swing.JFrame {
             }
 
         }
+        if(pronadjeniStudenti.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Sistem nije pronasao studente po zadatoj vrijednosti");
+        }
         studentModel.setStudenti(pronadjeniStudenti);
         studentModel.fireTableDataChanged();
     }//GEN-LAST:event_jButtonPretraziStudentaActionPerformed
@@ -534,6 +558,10 @@ public class MainForm extends javax.swing.JFrame {
             }
 
         }
+        
+        if(pronadjeneKompanije.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Sistem nije pronasao kompanije po zadatom kriterijumu.");
+        }
         kompanijaModel.setKompanije(pronadjeneKompanije);
         kompanijaModel.fireTableDataChanged();
     }//GEN-LAST:event_jButtonPronadjiKompanijuActionPerformed
@@ -542,13 +570,21 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            Kompanija kompanija = (Kompanija) kompanijaModel.getKompanije().get(jTableKompanija.getSelectedRow());
+            int index = jTableKompanija.getSelectedRow();
+            Kompanija kompanija;
+            if(index != -1) {
+                kompanija = (Kompanija) kompanijaModel.getKompanije().get(jTableKompanija.getSelectedRow());
+            } else {
+                JOptionPane.showMessageDialog(this, "Morate izabrati kompaniju");
+                return;
+            }
+            kompanija = (Kompanija) kompanijaModel.getKompanije().get(jTableKompanija.getSelectedRow());
             Controler.getInstance().obrisiKompaniju(kompanija);
             //            ako ne baci exception nastavalja se normalno
             kompanijaModel.getKompanije().remove(kompanija);
             kompanijaModel.fireTableDataChanged();
             JOptionPane.showMessageDialog(this, "Uspjesno brisanje kompanije sa podacima " + kompanija);
-
+            srediPraksaTabelu();
         } catch (IOException ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -561,20 +597,36 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jButtonImijeniKompanijuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImijeniKompanijuActionPerformed
         // TODO add your handling code here:
-        Kompanija kompanija = (Kompanija) kompanijaModel.getKompanije().get(jTableKompanija.getSelectedRow());
-        JOptionPane.showMessageDialog(this, kompanija.getKompanijaID());
+        int index = jTableKompanija.getSelectedRow();
+        Kompanija kompanija;
+        if(index != -1) {
+            kompanija = (Kompanija) kompanijaModel.getKompanije().get(index);
+        } else {
+            JOptionPane.showMessageDialog(this, "Morate izabrati kompaniju");
+            return;
+        }
         PodaciKompanijaForm psf = new PodaciKompanijaForm(kompanija, this);
 
         psf.setVisible(true);
         psf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        srediPraksaTabelu();
     }//GEN-LAST:event_jButtonImijeniKompanijuActionPerformed
 
     private void jButtonDodajKompanijuUPraksuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajKompanijuUPraksuActionPerformed
         // TODO add your handling code here:
-        Kompanija kompanija = (Kompanija) kompanijaModel.getKompanije().get(jTableKompanija.getSelectedRow());
+        ocistiPoljaZaUnosPrakse();
+        int index = jTableKompanija.getSelectedRow();
+        Kompanija kompanija;
+        if(index != -1) {
+            kompanija = (Kompanija) kompanijaModel.getKompanije().get(index);
+        } else {
+            JOptionPane.showMessageDialog(this, "Morate izabrati kompaniju");
+            return;
+        }
         if(praksa.getKompanija()!= null) {
             JOptionPane.showMessageDialog(this, "Kompanija vec izabrana! Ukloni kompaniju iz prakse ako zelis da uneses novu!");
         } else {
+            globalKompanija = kompanija;
             praksa.setKompanija(kompanija);
             jLabelKompanijaZaPraksu.setText(kompanija.toString());
             if(!praksa.getKompanija().getBranse().isEmpty()) {
@@ -588,11 +640,19 @@ public class MainForm extends javax.swing.JFrame {
     private void jButtonObrisiStudentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonObrisiStudentaActionPerformed
         try {
             // TODO add your handling code here:
-            Student student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+            int index = jTableStudenti.getSelectedRow();
+            Student student;
+            if(index != -1) {
+                student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+            } else {
+                JOptionPane.showMessageDialog(this, "Morate izabrati studenta");
+                return;
+            }
             Controler.getInstance().obrisiStudenta(student);
             //            ako ne baci exception nastavalja se normalno
             studentModel.getStudenti().remove(student);
             studentModel.fireTableDataChanged();
+            srediPraksaTabelu();
             JOptionPane.showMessageDialog(this, "Uspjesno brisanje studenta sa podacima " + student);
 
         } catch (IOException ex) {
@@ -607,21 +667,37 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jButtonIzmijeniStudentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIzmijeniStudentaActionPerformed
         // TODO add your handling code here:
-        Student student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+        int index = jTableStudenti.getSelectedRow();
+        Student student;
+        if(index != -1) {
+            student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+        } else {
+            JOptionPane.showMessageDialog(this, "Morate izabrati studenta");
+            return;
+        }
         JOptionPane.showMessageDialog(this, student.getStudentID());
         PodaciStudentForm psf = new PodaciStudentForm(student, this);
 
         psf.setVisible(true);
         psf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        srediPraksaTabelu();
     }//GEN-LAST:event_jButtonIzmijeniStudentaActionPerformed
 
     private void jButtonDodajStudentaUPraksuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajStudentaUPraksuActionPerformed
         // TODO add your handling code here:
-        Student student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+        ocistiPoljaZaUnosPrakse();
+        int index = jTableStudenti.getSelectedRow();
+        Student student;
+        if(index != -1) {
+            student = (Student) studentModel.getStudenti().get(jTableStudenti.getSelectedRow());
+        } else {
+            JOptionPane.showMessageDialog(this, "Morate izabrati studenta");
+            return;
+        }
         if(praksa.getStudent() != null) {
             JOptionPane.showMessageDialog(this, "Student vec izabran! Ukloni studenta iz prakse ako zelis da uneses novog!");
         } else {
+            globalStudent = student;
             praksa.setStudent(student);
             jLabelStudentZaPraksu.setText(student.toString());
 
@@ -690,10 +766,11 @@ public class MainForm extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PodaciStudentForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
+            
             JOptionPane.showMessageDialog(this, ex.getMessage());
             Logger.getLogger(PodaciStudentForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        praksa = new Praksa();
+//        praksa = new Praksa();
     }//GEN-LAST:event_jButtonUnosPrakseActionPerformed
 
     private void jTextFieldDatumZavrsetkaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDatumZavrsetkaActionPerformed
@@ -716,9 +793,29 @@ public class MainForm extends javax.swing.JFrame {
             }
 
         }
+        if(pronadjenePrakse.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Sistem nije pronasao prakse po zadatom kriterijumu.");
+        }
         praksaModel.setPrakse(pronadjenePrakse);
         praksaModel.fireTableDataChanged();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+        praksa.setKompanija(null);
+        praksa.setStudent(null);
+        Praksa p = (Praksa) prakse.get(jTablePrakse.getSelectedRow());
+        jLabelKompanijaZaPraksu.setText(p.getKompanija().toString());
+        jLabelStudentZaPraksu.setText(p.getStudent().toString());
+        jTextFieldDatumPocetka.setText(new SimpleDateFormat().format(p.getDatumOd()));
+        jTextFieldDatumZavrsetka.setText(new SimpleDateFormat().format(p.getDatumDo()));
+        jTextAreaKomentar.setText(p.getKomentarPoslodavca());
+        jComboBoxBranse.addItem(p.getBransa());
+        jSpinnerOcena.setValue(Integer.valueOf(p.getOcena()));
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     
     /**
@@ -759,6 +856,7 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonDodajKompanijuUPraksu;
     private javax.swing.JButton jButtonDodajStudentaUPraksu;
     private javax.swing.JButton jButtonImijeniKompaniju;

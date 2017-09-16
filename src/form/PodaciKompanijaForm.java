@@ -357,7 +357,7 @@ public class PodaciKompanijaForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Unesite poslovno ime!");
         } else if(kontakt.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Unesite kontakt!");
-        } else if(branse == null || branse.isEmpty()) {
+        } else if((branse == null || branse.isEmpty()) && !tipUnosa.equals("UPDATE")) {
             JOptionPane.showMessageDialog(this, "Dodajte branse!");
         } else {
             kompanija = new Kompanija(0, regBr, sifraDjelatnosti, poslovnoIme, kontakt, branse);
